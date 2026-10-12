@@ -1,0 +1,590 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		17A90FC20818BE1B8F66ADC7 /* KeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7CC00F1A06596DE1F62FCE /* KeepAlive.swift */; };
+		18D491F2A0F978196D719523 /* DriftLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B3484B2A303DC4BCE7B687 /* DriftLiveActivity.swift */; };
+		21E1FA7D2BB06A585B1BD6BC /* PairingFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA278ED9BBF17C1D143FFAFB /* PairingFileStore.swift */; };
+		3482DD320F5DAC456425385F /* PlaceSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25496698833F4208815B318F /* PlaceSearch.swift */; };
+		42F4B84A8DC2D2B6CDD2506B /* DriftActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4A5AA5D34318152B549C7 /* DriftActivityAttributes.swift */; };
+		49CBC58829322A702D132F9B /* DriftActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4A5AA5D34318152B549C7 /* DriftActivityAttributes.swift */; };
+		5919D908E40431E675AF4443 /* SpoofEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D59A2CB32BD356192BCBF9 /* SpoofEngine.swift */; };
+		59E2FB981D7305A5EDE4E05C /* RoutePlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD3EEC897FB474BE48AA91A /* RoutePlanner.swift */; };
+		708C633F63B4B4906BEAA480 /* RenewalReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00EBB964807EE23CDF49961 /* RenewalReminder.swift */; };
+		7371B021000134AEC703DFA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 700E71AD936866504EB358D8 /* Assets.xcassets */; };
+		89E0B7471DCAB5F09F5F13FF /* Issue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A223CFE6C7F4E7292483A745 /* Issue.swift */; };
+		90E81EB62AB7C0F91E5C256F /* DeveloperImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB1AFE1A9FA40B0C15266F /* DeveloperImage.swift */; };
+		97003F5A370F251D4EEAFD1F /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC3A227189D260BC4F79112 /* NetworkStatus.swift */; };
+		988563B226383EAA4DECDF85 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F7F2782E0E89288BF90445 /* ContentView.swift */; };
+		9EFB79C77D0B56BB97EAE5D1 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3AF3A844251CAC4EDBE583 /* LiveActivityController.swift */; };
+		B6080A9BA9846FB427A0E18C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0875D4A3B85B50C9FFE45C8 /* Theme.swift */; };
+		BAB79E33372B3FA57DDDFBAC /* DeviceLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F508F197D37EF20787724931 /* DeviceLink.swift */; };
+		CAB4BE8F133B607985FD0DE2 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808F03BC48EC4B43BA5398E7 /* ScheduleView.swift */; };
+		DEC0557093C32BC0406F2F70 /* DriftActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EC87DB29B07984F554299B3F /* DriftActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EB75CFE01BA902B439E12360 /* PlaceSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CBE2EEA04D1F67240EFAC24 /* PlaceSearchField.swift */; };
+		EBA5F563D095680DF8562539 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A43F5F8DA5E1D28BFF127BA /* Models.swift */; };
+		ECF11542596170A83DB72072 /* DriftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80473000068BB96DF392A468 /* DriftApp.swift */; };
+		F35A714EEF6D2DF4415F1CD4 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66B82EACA31D7C0E74E9D69 /* SetupView.swift */; };
+		F604A1C2EB761352BE4E2F88 /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F24C7500B2D25C3549E38D /* SavedView.swift */; };
+		F8422069990AD086C6E86C85 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E9B09EC8A6D8428118F3E7 /* Reachability.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0901B94E7BAF0991BC59C99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C57AFFDCB18AE227A2FF2ECA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AA0BA7C79CB3D0E7B2FADBB;
+			remoteInfo = DriftActivity;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E9172D29FDC438EA5075B0EE /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DEC0557093C32BC0406F2F70 /* DriftActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0CD3EEC897FB474BE48AA91A /* RoutePlanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePlanner.swift; sourceTree = "<group>"; };
+		11D59A2CB32BD356192BCBF9 /* SpoofEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofEngine.swift; sourceTree = "<group>"; };
+		22F24C7500B2D25C3549E38D /* SavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
+		25496698833F4208815B318F /* PlaceSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearch.swift; sourceTree = "<group>"; };
+		2A43F5F8DA5E1D28BFF127BA /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		31B3484B2A303DC4BCE7B687 /* DriftLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriftLiveActivity.swift; sourceTree = "<group>"; };
+		3CBE2EEA04D1F67240EFAC24 /* PlaceSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchField.swift; sourceTree = "<group>"; };
+		3D75C26FAFA40B7515D39E63 /* Drift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Drift.entitlements; sourceTree = "<group>"; };
+		4BC3A227189D260BC4F79112 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
+		4F7CC00F1A06596DE1F62FCE /* KeepAlive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAlive.swift; sourceTree = "<group>"; };
+		54B4CDAAD7BDA3195834ACB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		552F5AE6789DA294DDB91E8B /* Drift.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Drift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AD4A5AA5D34318152B549C7 /* DriftActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriftActivityAttributes.swift; sourceTree = "<group>"; };
+		5EEB1AFE1A9FA40B0C15266F /* DeveloperImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperImage.swift; sourceTree = "<group>"; };
+		67F7F2782E0E89288BF90445 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		687F94E23DF3B43C6BD25781 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		700E71AD936866504EB358D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		80473000068BB96DF392A468 /* DriftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriftApp.swift; sourceTree = "<group>"; };
+		808F03BC48EC4B43BA5398E7 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
+		A0875D4A3B85B50C9FFE45C8 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A223CFE6C7F4E7292483A745 /* Issue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Issue.swift; sourceTree = "<group>"; };
+		B1E9B09EC8A6D8428118F3E7 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		C00EBB964807EE23CDF49961 /* RenewalReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenewalReminder.swift; sourceTree = "<group>"; };
+		D66B82EACA31D7C0E74E9D69 /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
+		EC87DB29B07984F554299B3F /* DriftActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DriftActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF3AF3A844251CAC4EDBE583 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		F508F197D37EF20787724931 /* DeviceLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLink.swift; sourceTree = "<group>"; };
+		FA278ED9BBF17C1D143FFAFB /* PairingFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingFileStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0EA67573775347F2DA7F1A99 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552F5AE6789DA294DDB91E8B /* Drift.app */,
+				EC87DB29B07984F554299B3F /* DriftActivity.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1DCFB184D941DDFAE30E78F8 = {
+			isa = PBXGroup;
+			children = (
+				DF13210FEF8ED80B93DD4A50 /* Drift */,
+				836C60F3CB85C398A7FB5041 /* DriftActivity */,
+				3A2CF3AF27D8BF1210DB2735 /* Shared */,
+				0EA67573775347F2DA7F1A99 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		226098467899BBAE87630655 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				3D75C26FAFA40B7515D39E63 /* Drift.entitlements */,
+				687F94E23DF3B43C6BD25781 /* Info.plist */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		3A2CF3AF27D8BF1210DB2735 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5AD4A5AA5D34318152B549C7 /* DriftActivityAttributes.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		4A7204948841850DFF3D940D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				67F7F2782E0E89288BF90445 /* ContentView.swift */,
+				3CBE2EEA04D1F67240EFAC24 /* PlaceSearchField.swift */,
+				22F24C7500B2D25C3549E38D /* SavedView.swift */,
+				808F03BC48EC4B43BA5398E7 /* ScheduleView.swift */,
+				D66B82EACA31D7C0E74E9D69 /* SetupView.swift */,
+				A0875D4A3B85B50C9FFE45C8 /* Theme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		78B7B4965FAE755211B31EF7 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A223CFE6C7F4E7292483A745 /* Issue.swift */,
+				4F7CC00F1A06596DE1F62FCE /* KeepAlive.swift */,
+				EF3AF3A844251CAC4EDBE583 /* LiveActivityController.swift */,
+				25496698833F4208815B318F /* PlaceSearch.swift */,
+				C00EBB964807EE23CDF49961 /* RenewalReminder.swift */,
+				0CD3EEC897FB474BE48AA91A /* RoutePlanner.swift */,
+				11D59A2CB32BD356192BCBF9 /* SpoofEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		836C60F3CB85C398A7FB5041 /* DriftActivity */ = {
+			isa = PBXGroup;
+			children = (
+				31B3484B2A303DC4BCE7B687 /* DriftLiveActivity.swift */,
+				54B4CDAAD7BDA3195834ACB7 /* Info.plist */,
+			);
+			path = DriftActivity;
+			sourceTree = "<group>";
+		};
+		8EC4FF51228A8D1AB56EA263 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				80473000068BB96DF392A468 /* DriftApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D758CFE75CAB274413E181F9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2A43F5F8DA5E1D28BFF127BA /* Models.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DF13210FEF8ED80B93DD4A50 /* Drift */ = {
+			isa = PBXGroup;
+			children = (
+				700E71AD936866504EB358D8 /* Assets.xcassets */,
+				8EC4FF51228A8D1AB56EA263 /* App */,
+				FC03022C7A587E787EC41F95 /* Device */,
+				78B7B4965FAE755211B31EF7 /* Engine */,
+				D758CFE75CAB274413E181F9 /* Models */,
+				226098467899BBAE87630655 /* Support */,
+				4A7204948841850DFF3D940D /* Views */,
+			);
+			path = Drift;
+			sourceTree = "<group>";
+		};
+		FC03022C7A587E787EC41F95 /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				5EEB1AFE1A9FA40B0C15266F /* DeveloperImage.swift */,
+				F508F197D37EF20787724931 /* DeviceLink.swift */,
+				4BC3A227189D260BC4F79112 /* NetworkStatus.swift */,
+				FA278ED9BBF17C1D143FFAFB /* PairingFileStore.swift */,
+				B1E9B09EC8A6D8428118F3E7 /* Reachability.swift */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0AA0BA7C79CB3D0E7B2FADBB /* DriftActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 451E419C1647F2661CF68E1C /* Build configuration list for PBXNativeTarget "DriftActivity" */;
+			buildPhases = (
+				818E22D0E76577D0C635E441 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DriftActivity;
+			packageProductDependencies = (
+			);
+			productName = DriftActivity;
+			productReference = EC87DB29B07984F554299B3F /* DriftActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		CAEDCE34417A91D973F68377 /* Drift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F406649AF13D92F90944A7F1 /* Build configuration list for PBXNativeTarget "Drift" */;
+			buildPhases = (
+				271ED68B29D0DA60F5E3CB98 /* Sources */,
+				F72ECFB3C1B5BC2EFDA4A82C /* Resources */,
+				E9172D29FDC438EA5075B0EE /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				ECC46966DBC5239B411424E3 /* PBXTargetDependency */,
+			);
+			name = Drift;
+			packageProductDependencies = (
+			);
+			productName = Drift;
+			productReference = 552F5AE6789DA294DDB91E8B /* Drift.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C57AFFDCB18AE227A2FF2ECA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0AA0BA7C79CB3D0E7B2FADBB = {
+						ProvisioningStyle = Automatic;
+					};
+					CAEDCE34417A91D973F68377 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 68F4AD629CB425B82407650A /* Build configuration list for PBXProject "Drift" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1DCFB184D941DDFAE30E78F8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0EA67573775347F2DA7F1A99 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CAEDCE34417A91D973F68377 /* Drift */,
+				0AA0BA7C79CB3D0E7B2FADBB /* DriftActivity */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F72ECFB3C1B5BC2EFDA4A82C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7371B021000134AEC703DFA5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		271ED68B29D0DA60F5E3CB98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				988563B226383EAA4DECDF85 /* ContentView.swift in Sources */,
+				90E81EB62AB7C0F91E5C256F /* DeveloperImage.swift in Sources */,
+				BAB79E33372B3FA57DDDFBAC /* DeviceLink.swift in Sources */,
+				49CBC58829322A702D132F9B /* DriftActivityAttributes.swift in Sources */,
+				ECF11542596170A83DB72072 /* DriftApp.swift in Sources */,
+				89E0B7471DCAB5F09F5F13FF /* Issue.swift in Sources */,
+				17A90FC20818BE1B8F66ADC7 /* KeepAlive.swift in Sources */,
+				9EFB79C77D0B56BB97EAE5D1 /* LiveActivityController.swift in Sources */,
+				EBA5F563D095680DF8562539 /* Models.swift in Sources */,
+				97003F5A370F251D4EEAFD1F /* NetworkStatus.swift in Sources */,
+				21E1FA7D2BB06A585B1BD6BC /* PairingFileStore.swift in Sources */,
+				3482DD320F5DAC456425385F /* PlaceSearch.swift in Sources */,
+				EB75CFE01BA902B439E12360 /* PlaceSearchField.swift in Sources */,
+				F8422069990AD086C6E86C85 /* Reachability.swift in Sources */,
+				708C633F63B4B4906BEAA480 /* RenewalReminder.swift in Sources */,
+				59E2FB981D7305A5EDE4E05C /* RoutePlanner.swift in Sources */,
+				F604A1C2EB761352BE4E2F88 /* SavedView.swift in Sources */,
+				CAB4BE8F133B607985FD0DE2 /* ScheduleView.swift in Sources */,
+				F35A714EEF6D2DF4415F1CD4 /* SetupView.swift in Sources */,
+				5919D908E40431E675AF4443 /* SpoofEngine.swift in Sources */,
+				B6080A9BA9846FB427A0E18C /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		818E22D0E76577D0C635E441 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42F4B84A8DC2D2B6CDD2506B /* DriftActivityAttributes.swift in Sources */,
+				18D491F2A0F978196D719523 /* DriftLiveActivity.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ECC46966DBC5239B411424E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AA0BA7C79CB3D0E7B2FADBB /* DriftActivity */;
+			targetProxy = D0901B94E7BAF0991BC59C99 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1C9B0CB149C7B02DC969D4FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DRIFT_BUNDLE_ID = com.example.drift;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		4FAEAF63022212958784939E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = DriftActivity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DRIFT_BUNDLE_ID).LiveActivity";
+				PRODUCT_NAME = DriftActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5372942E6830BD1EDB1B72E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = DriftActivity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DRIFT_BUNDLE_ID).LiveActivity";
+				PRODUCT_NAME = DriftActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7C190047C04497DC44F492BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Drift/Support/Drift.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/Drift/idevice";
+				INFOPLIST_FILE = Drift/Support/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/Drift/idevice";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -lidevice_ffi";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DRIFT_BUNDLE_ID)";
+				PRODUCT_NAME = Drift;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(PROJECT_DIR)/Drift/idevice";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D2C48B12CC940FCA05A8E07F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DRIFT_BUNDLE_ID = com.example.drift;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D912882FFA52AB5EEF2B7B2D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Drift/Support/Drift.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = NO;
+				HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/Drift/idevice";
+				INFOPLIST_FILE = Drift/Support/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/Drift/idevice";
+				"OTHER_LDFLAGS[sdk=iphoneos*]" = "$(inherited) -lidevice_ffi";
+				PRODUCT_BUNDLE_IDENTIFIER = "$(DRIFT_BUNDLE_ID)";
+				PRODUCT_NAME = Drift;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(PROJECT_DIR)/Drift/idevice";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		451E419C1647F2661CF68E1C /* Build configuration list for PBXNativeTarget "DriftActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FAEAF63022212958784939E /* Debug */,
+				5372942E6830BD1EDB1B72E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		68F4AD629CB425B82407650A /* Build configuration list for PBXProject "Drift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2C48B12CC940FCA05A8E07F /* Debug */,
+				1C9B0CB149C7B02DC969D4FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F406649AF13D92F90944A7F1 /* Build configuration list for PBXNativeTarget "Drift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D912882FFA52AB5EEF2B7B2D /* Debug */,
+				7C190047C04497DC44F492BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C57AFFDCB18AE227A2FF2ECA /* Project object */;
+}

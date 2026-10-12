@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drift</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root {
+  --bg: #0c0c0f; --panel: #141418; --card: #1c1c21; --field: #202026; --line: #2a2a31;
+  --text: #ececf2; --muted: #8e8e99; --dim: #5e5e69;
+  --accent: #6bc7ee; --accent-2: #3fa9d8; --accent-soft: rgba(107,199,238,.14);
+  --green: #5bd879; --red: #ff5e55; --orange: #ff9563;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+  font: 14px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+#map { position: fixed; inset: 0 0 0 370px; background: #1b1b1f; }
+aside { position: fixed; top: 0; left: 0; bottom: 0; width: 370px; background: var(--panel);
+  border-right: 1px solid var(--line); display: flex; flex-direction: column; z-index: 1000; }
+header { padding: 16px 18px 10px; display: flex; align-items: center; gap: 10px; }
+header h1 { font-size: 19px; margin: 0; letter-spacing: -.02em; }
+.pill { margin-left: auto; font-size: 12px; padding: 5px 10px; border-radius: 99px; background: var(--card);
+  color: var(--muted); display: flex; align-items: center; gap: 6px; max-width: 210px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); flex: none; }
+.dot.on { background: var(--green); box-shadow: 0 0 0 3px rgba(91,216,121,.18); }
+nav { display: flex; padding: 0 12px; border-bottom: 1px solid var(--line); }
+nav button { flex: 1; border: 0; background: none; color: var(--muted); padding: 10px 4px; font: inherit; font-weight: 600;
+  font-size: 13px; border-bottom: 2px solid transparent; cursor: pointer; }
+nav button.on { color: var(--accent); border-bottom-color: var(--accent); }
+.scroll { flex: 1; overflow-y: auto; padding: 14px 16px 20px; }
+.tab { display: none; } .tab.on { display: block; }
+.search { position: relative; }
+input[type=text], input[type=number], input[type=datetime-local], select {
+  width: 100%; padding: 10px 12px; border-radius: 11px; border: 1px solid var(--line); background: var(--field);
+  color: var(--text); font: inherit; outline: none; }
+input:focus, select:focus { border-color: var(--accent-2); }
+.results { position: absolute; top: 44px; left: 0; right: 0; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.5); overflow: hidden; z-index: 10; display: none; }
+.results div { padding: 9px 12px; cursor: pointer; border-bottom: 1px solid var(--line); }
+.results div:last-child { border-bottom: 0; }
+.results div:hover { background: var(--field); }
+.muted, .results small { color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px; margin-top: 12px; }
+.card h3 { margin: 0 0 2px; font-size: 16px; }
+.eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .07em; color: var(--accent); text-transform: uppercase; }
+.row { display: flex; gap: 8px; align-items: center; }
+.row > * { flex: 1; }
+.btn { border: 0; border-radius: 12px; padding: 11px 14px; font: inherit; font-weight: 650; cursor: pointer;
+  background: var(--accent-soft); color: var(--accent); }
+.btn.primary { background: linear-gradient(180deg, var(--accent), var(--accent-2)); color: #fff; }
+.btn.stop { background: rgba(255,94,85,.16); color: var(--red); border: 1px solid rgba(255,94,85,.4); }
+.btn.live { background: rgba(91,216,121,.14); color: var(--green); border: 1px solid rgba(91,216,121,.4); cursor: default; }
+.btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.small { padding: 6px 10px; font-size: 12px; border-radius: 9px; flex: none; }
+.star { background: none; border: 0; font-size: 20px; cursor: pointer; color: var(--muted); flex: none; }
+.star.on { color: #f5c13d; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+.bar { height: 5px; border-radius: 9px; background: var(--line); overflow: hidden; margin: 10px 0; }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .8s linear; }
+.warn { background: rgba(255,149,99,.13); color: var(--orange); padding: 9px 12px; border-radius: 10px; margin-top: 10px; font-size: 13px; }
+.seg { display: flex; background: var(--field); border-radius: 11px; padding: 3px; gap: 3px; margin: 8px 0; }
+.seg button { flex: 1; border: 0; background: transparent; padding: 7px; border-radius: 9px; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; }
+.seg button.on { background: var(--card); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.35); }
+label.field { display: block; margin-top: 12px; font-weight: 600; font-size: 12px; color: var(--muted); }
+label.field > * { margin-top: 5px; }
+.list .item { display: flex; align-items: center; gap: 10px; padding: 10px 4px; border-bottom: 1px solid var(--line); }
+.list .item .t { flex: 1; min-width: 0; cursor: pointer; }
+.list .item .t b, .list .item .t small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.step { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.step .n { width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+  display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; }
+.step .n.done { background: var(--green); color: #0c0c0f; }
+.step .b { flex: 1; }
+.step .b p { margin: 3px 0 8px; color: var(--muted); font-size: 13px; }
+pre.log { background: #08080a; color: #c6c6d6; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 11px; max-height: 180px;
+  overflow: auto; white-space: pre-wrap; margin: 8px 0 0; display: none; }
+.msg { font-size: 13px; margin-top: 6px; }
+.msg.ok { color: var(--green); } .msg.err { color: var(--red); }
+.toast { position: fixed; left: 390px; bottom: 20px; right: 20px; margin: auto; max-width: 520px; background: var(--card); color: var(--text);
+  border: 1px solid var(--line); padding: 12px 16px; border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.5); z-index: 2000; display: none; }
+.youdot { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid var(--green); box-shadow: 0 0 0 0 rgba(91,216,121,.5); animation: pulse 1.8s infinite; }
+.seldot { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,.5); }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(91,216,121,.55);} 100% { box-shadow: 0 0 0 22px rgba(91,216,121,0);} }
+.leaflet-control-attribution { background: rgba(20,20,24,.7) !important; color: var(--dim) !important; }
+.leaflet-control-attribution a { color: var(--muted) !important; }
+.leaflet-bar a { background: var(--card) !important; color: var(--text) !important; border-color: var(--line) !important; }
+@media (max-width: 760px) {
+  aside { width: 100%; height: 58%; top: auto; border-right: 0; border-top: 1px solid var(--line); }
+  #map { inset: 0 0 58% 0; }
+  .toast { left: 16px; right: 16px; }
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<aside>
+  <header>
+    <h1>Drift</h1>
+    <div class="pill"><span class="dot" id="deviceDot"></span><span id="deviceText">Looking for iPhone…</span></div>
+  </header>
+  <nav>
+    <button data-tab="spoof" class="on">Spoof</button>
+    <button data-tab="route">Route</button>
+    <button data-tab="saved">Saved</button>
+    <button data-tab="schedule">Schedule</button>
+    <button data-tab="setup">Setup</button>
+  </nav>
+  <div class="scroll">
+    <section class="tab on" id="tab-spoof">
+      <div class="search">
+        <input type="text" id="q" placeholder="Search places, addresses or coordinates" autocomplete="off">
+        <div class="results" id="qResults"></div>
+      </div>
+      <div id="statusCard"></div>
+      <div id="selectedCard"></div>
+      <p class="muted" style="margin-top:14px;font-size:12px">Click the map to drop a pin. With the cable in, Drift spoofs straight from this Mac. For phone-only spoofing, finish the <a href="#" data-goto="setup">Setup</a> tab once.</p>
+    </section>
+
+    <section class="tab" id="tab-route">
+      <label class="field">From
+        <div class="search"><input type="text" id="rFrom" placeholder="Start (defaults to current spot)" autocomplete="off"><div class="results" id="rFromResults"></div></div>
+      </label>
+      <label class="field">To
+        <div class="search"><input type="text" id="rTo" placeholder="Destination" autocomplete="off"><div class="results" id="rToResults"></div></div>
+      </label>
+      <div class="seg" id="modeSeg">
+        <button data-mode="walk" class="on">Walk</button><button data-mode="bike">Bike</button><button data-mode="drive">Drive</button>
+      </div>
+      <label class="field">Speed: <span id="kmhLabel">5</span> km/h
+        <input type="range" id="kmh" min="2" max="9" value="5" style="width:100%">
+      </label>
+      <label class="row" style="margin-top:10px;gap:8px;justify-content:flex-start"><input type="checkbox" id="loop" style="flex:none"> <span>Loop (go back and forth)</span></label>
+      <div class="card" id="routeInfo" style="display:none"></div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="previewBtn">Preview</button>
+        <button class="btn primary" id="startRouteBtn">Start route</button>
+      </div>
+    </section>
+
+    <section class="tab" id="tab-saved">
+      <div class="seg" id="savedSeg"><button data-k="bookmarks" class="on">Bookmarks</button><button data-k="history">History</button></div>
+      <div class="list" id="savedList"></div>
+    </section>
+
+    <section class="tab" id="tab-schedule">
+      <div class="list" id="jobList"></div>
+      <div class="card">
+        <div class="eyebrow">New schedule</div>
+        <div class="seg" id="jobSeg"><button data-k="teleport" class="on">Teleport</button><button data-k="route">Route</button></div>
+        <div id="jobFromWrap" style="display:none">
+          <label class="field">From<div class="search"><input type="text" id="jFrom" placeholder="Start" autocomplete="off"><div class="results" id="jFromResults"></div></div></label>
+          <label class="field">Mode<select id="jMode"><option value="walk">Walk</option><option value="bike">Bike</option><option value="drive">Drive</option></select></label>
+        </div>
+        <label class="field"><span id="jToLabel">Place</span><div class="search"><input type="text" id="jTo" placeholder="Search…" autocomplete="off"><div class="results" id="jToResults"></div></div></label>
+        <label class="field">When<input type="datetime-local" id="jWhen"></label>
+        <button class="btn primary" id="scheduleBtn" style="width:100%;margin-top:12px">Schedule</button>
+        <p class="muted" style="font-size:12px;margin:8px 0 0">Keep this Mac awake with the iPhone plugged in. For schedules from the phone alone, use Drift on the iPhone (Settings › Scheduling or the calendar button on a route).</p>
+      </div>
+    </section>
+
+    <section class="tab" id="tab-setup">
+      <p class="muted" style="margin-top:0">Do this once with the cable. After that Drift runs on your iPhone with no computer.</p>
+      <div class="step"><div class="n" id="s1n">1</div><div class="b"><b>Plug in your iPhone</b>
+        <p>Unlock it and tap <b>Trust</b> if asked.</p><div class="msg" id="s1msg"></div></div></div>
+      <div class="step"><div class="n" id="s2n">2</div><div class="b"><b>Turn on Developer Mode</b>
+        <p>Settings › Privacy &amp; Security › Developer Mode. The phone restarts once.</p>
+        <button class="btn small" id="devModeBtn">Show Developer Mode switch</button><div class="msg" id="s2msg"></div></div></div>
+      <div class="step"><div class="n" id="s3n">3</div><div class="b"><b>Install Drift on the iPhone</b>
+        <p>Signs Drift with the free Apple ID in your Xcode and installs it. Re-run weekly (free Apple IDs sign for 7 days).</p>
+        <div class="row"><button class="btn small primary" id="installBtn">Install Drift</button></div>
+        <pre class="log" id="jobLog"></pre><div class="msg" id="s3msg"></div></div></div>
+      <div class="step"><div class="n">4</div><div class="b"><b>Trust it on the iPhone</b>
+        <p>Settings › General › VPN &amp; Device Management › your Apple ID › <b>Trust</b>.</p></div></div>
+      <div class="step"><div class="n">5</div><div class="b"><b>Get LocalDevVPN</b>
+        <p>Free on the App Store. A loopback connection that lets Drift reach the phone's own developer services.</p>
+        <a class="btn small" href="https://apps.apple.com/app/localdevvpn/id6755608044" target="_blank" rel="noopener">Open App Store page</a></div></div>
+      <div class="step"><div class="n" id="s6n">6</div><div class="b"><b>Pairing file</b>
+        <p>Creates a pairing just for Drift and copies it into the app. A copy is saved to your Desktop.</p>
+        <div class="row"><button class="btn small primary" id="pairBtn">Make pairing file</button><button class="btn small ghost" id="pushBtn">Copy existing into Drift</button></div>
+        <div class="msg" id="s6msg"></div></div></div>
+      <div class="step"><div class="n">7</div><div class="b"><b>Unplug and go</b>
+        <p>On the iPhone: turn on LocalDevVPN, open Drift, pick a place, tap <b>Spoof</b>.</p>
+        <button class="btn small ghost" id="mountBtn">Mount developer image now (optional)</button><div class="msg" id="s7msg"></div></div></div>
+
+      <div class="card">
+        <div class="eyebrow">Settings (Mac)</div>
+        <label class="field">Killswitch
+          <select id="setKill"><option value="0">Off</option><option value="15">15 min</option><option value="30">30 min</option><option value="60">1 hour</option><option value="120">2 hours</option><option value="240">4 hours</option><option value="480">8 hours</option></select></label>
+        <label class="row" style="margin-top:12px;justify-content:flex-start;gap:8px"><input type="checkbox" id="setJitter" style="flex:none"> <span>Natural GPS jitter</span></label>
+        <div class="row" style="margin-top:8px">
+          <label class="field">Walk km/h<input type="number" id="setWalk" min="2" max="9"></label>
+          <label class="field">Bike km/h<input type="number" id="setBike" min="6" max="40"></label>
+          <label class="field">Drive km/h<input type="number" id="setDrive" min="15" max="140"></label>
+        </div>
+      </div>
+      <button class="btn ghost" id="quitBtn" style="width:100%;margin-top:14px">Quit Drift for Mac</button>
+    </section>
+  </div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const api = async (path, body) => {
+  const r = await fetch(path, body === undefined ? {} : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok && data.ok === undefined) data.error = data.detail || 'Request failed';
+  return data;
+};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtCoord = p => `${(+p.lat).toFixed(6)}, ${(+p.lon).toFixed(6)}`;
+const fmtDist = m => m >= 1000 ? (m / 1000).toFixed(m >= 10000 ? 0 : 1) + ' km' : Math.round(m) + ' m';
+const fmtDur = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60; return h ? `${h}h ${m}m` : m ? `${m}m ${sec}s` : `${sec}s`; };
+const fmtClock = s => { s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60; const p = n => String(n).padStart(2, '0'); return h ? `${h}:${p(m)}:${p(sec)}` : `${p(m)}:${p(sec)}`; };
+function toast(msg, ms = 4500) { const t = $('#toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = 'none', ms); }
+
+const map = L.map('map', { zoomControl: false }).setView([43.6532, -79.3832], 12);
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 16, attribution: 'Tiles &copy; Esri, HERE, Garmin, &copy; OpenStreetMap contributors'
+}).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16 }).addTo(map);
+const selIcon = L.divIcon({ className: '', html: '<div class="seldot"></div>', iconSize: [20, 20], iconAnchor: [10, 10] });
+const youIcon = L.divIcon({ className: '', html: '<div class="youdot"></div>', iconSize: [20, 20], iconAnchor: [10, 10] });
+const endIcon = L.divIcon({ className: '', html: '<div style="width:14px;height:14px;border-radius:50%;background:#ff9563;border:3px solid #fff"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
+let selMarker = null, youMarker = null, routeLine = null, routeGlow = null, endMarker = null;
+
+let S = { status: 'idle' }, selected = null, preview = null, mode = 'walk', savedKind = 'bookmarks', jobKind = 'teleport';
+let rFrom = null, rTo = null, jFrom = null, jTo = null, device = {};
+
+map.on('click', async e => {
+  const p = { name: 'Dropped pin', subtitle: '', lat: e.latlng.lat, lon: e.latlng.lng };
+  select(p, false);
+  const r = await api(`/api/reverse?lat=${p.lat}&lon=${p.lon}`);
+  if (r.ok && selected && selected.lat === p.lat) select(r.place, false);
+});
+
+function select(p, fly = true) {
+  selected = p;
+  if (!selMarker) selMarker = L.marker([p.lat, p.lon], { icon: selIcon }).addTo(map); else selMarker.setLatLng([p.lat, p.lon]);
+  if (fly) map.flyTo([p.lat, p.lon], Math.max(map.getZoom(), 15), { duration: .8 });
+  renderSelected();
+}
+
+function wireSearch(input, box, onPick) {
+  let timer = null, last = '';
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { box.style.display = 'none'; return; }
+    timer = setTimeout(async () => {
+      last = q;
+      const r = await api('/api/search?q=' + encodeURIComponent(q));
+      if (q !== last) return;
+      if (!r.ok || !r.results.length) { box.innerHTML = '<div class="muted">No results</div>'; box.style.display = 'block'; return; }
+      box.innerHTML = r.results.map((p, i) => `<div data-i="${i}"><b>${esc(p.name)}</b><br><small>${esc(p.subtitle || fmtCoord(p))}</small></div>`).join('');
+      box.style.display = 'block';
+      box.querySelectorAll('[data-i]').forEach(el => el.onclick = () => { box.style.display = 'none'; onPick(r.results[+el.dataset.i]); });
+    }, 350);
+  });
+  input.addEventListener('blur', () => setTimeout(() => box.style.display = 'none', 200));
+}
+wireSearch($('#q'), $('#qResults'), p => { $('#q').value = ''; select(p); });
+wireSearch($('#rFrom'), $('#rFromResults'), p => { rFrom = p; $('#rFrom').value = p.name; preview = null; drawRoute(); });
+wireSearch($('#rTo'), $('#rToResults'), p => { rTo = p; $('#rTo').value = p.name; preview = null; drawRoute(); });
+wireSearch($('#jFrom'), $('#jFromResults'), p => { jFrom = p; $('#jFrom').value = p.name; });
+wireSearch($('#jTo'), $('#jToResults'), p => { jTo = p; $('#jTo').value = p.name; });
+
+function showTab(name) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.id === 'tab-' + name));
+  if (name === 'route') prefillRoute();
+  if (name === 'schedule') prefillSchedule();
+  if (name === 'saved') renderSaved();
+}
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => showTab(b.dataset.tab));
+document.querySelectorAll('[data-goto]').forEach(a => a.onclick = e => { e.preventDefault(); showTab(a.dataset.goto); });
+
+function isBookmarked(p) { return (S.bookmarks || []).some(b => Math.abs(b.lat - p.lat) < 0.0003 && Math.abs(b.lon - p.lon) < 0.0003); }
+function renderSelected() {
+  const el = $('#selectedCard');
+  const active = ['holding', 'moving', 'paused'].includes(S.status);
+  if (!selected) { el.innerHTML = active ? '' : `<div class="card"><b>Pick a spot</b><div class="muted">Search above or click anywhere on the map.</div></div>`; return; }
+  const same = active && S.place && Math.abs(S.place.lat - selected.lat) < 1e-5 && Math.abs(S.place.lon - selected.lon) < 1e-5;
+  if (same) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="card">
+    <div class="row" style="align-items:flex-start"><div style="flex:1;min-width:0"><h3>${esc(selected.name)}</h3>
+      <div class="muted">${esc(selected.subtitle || '')}</div><div class="mono muted">${fmtCoord(selected)}</div></div>
+      <button class="star ${isBookmarked(selected) ? 'on' : ''}" id="starBtn" title="Bookmark">${isBookmarked(selected) ? '★' : '☆'}</button></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="routeHereBtn">Route here</button>
+      <button class="btn primary" id="spoofBtn" ${S.status === 'working' ? 'disabled' : ''}>${active ? 'Move here' : 'Spoof'}</button></div></div>`;
+  $('#starBtn').onclick = async () => { await api('/api/bookmark', selected); await poll(); renderSelected(); };
+  $('#spoofBtn').onclick = async () => { await api('/api/teleport', selected); poll(); };
+  $('#routeHereBtn').onclick = () => { rTo = selected; showTab('route'); };
+}
+
+function renderStatus() {
+  const el = $('#statusCard');
+  let html = '';
+  if (S.status === 'working') html = `<div class="card"><span class="muted">${esc(S.message || 'Working…')}</span></div>`;
+  else if (S.status === 'holding' && S.place) html = activeCard(S.place.name, S.place.subtitle || fmtCoord(S.place), '', false);
+  else if ((S.status === 'moving' || S.status === 'paused') && S.route) {
+    const r = S.route, label = { walk: 'Walk', bike: 'Bike', drive: 'Drive' }[r.mode];
+    html = activeCard(`${label} to ${r.end.name}`,
+      S.remaining > 0 ? `${fmtDur(S.remaining)} left${S.status === 'paused' ? ' · paused' : ''}` : 'Arriving…',
+      `<div class="bar"><i style="width:${(S.progress * 100).toFixed(1)}%"></i></div>`, true);
+  }
+  if (S.warning) html += `<div class="warn">${esc(S.warning)}</div>`;
+  el.innerHTML = html;
+  const stop = $('#stopBtn'); if (stop) stop.onclick = async () => { stop.disabled = true; await api('/api/stop', {}); poll(); };
+  const pause = $('#pauseBtn'); if (pause) pause.onclick = async () => { await api('/api/pause', {}); poll(); };
+  const ext = $('#extBtn'); if (ext) ext.onclick = async () => { await api('/api/killswitch', { minutes: 15 }); poll(); };
+  const off = $('#offBtn'); if (off) off.onclick = async () => { await api('/api/killswitch', { off: true }); poll(); };
+}
+function activeCard(title, sub, extra, isRoute) {
+  const since = isRoute ? S.routeStartedAt : S.startedAt;
+  const timer = since ? fmtClock(S.now - since) : '';
+  const ks = S.killswitchDeadline ? `<div class="row muted" style="margin-top:6px;font-size:12px"><span style="flex:1">Auto-stop in <b>${fmtDur(S.killswitchDeadline - S.now)}</b></span>
+    <button class="btn small" id="extBtn">+15m</button><button class="btn small ghost" id="offBtn">Off</button></div>` : '';
+  return `<div class="card"><h3 style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(title)}</h3><div class="muted">${esc(sub)}</div>
+    ${extra}${ks}
+    <div class="row" style="margin-top:12px"><div class="btn live" style="flex:1.4;text-align:center">${isRoute ? (S.status === 'paused' ? 'Paused' : 'Route live') : 'Spoofing'} · ${timer}</div>
+    <button class="btn stop" id="stopBtn">Stop</button>${isRoute ? `<button class="btn ghost small" id="pauseBtn" style="padding:11px 12px">${S.status === 'paused' ? '▶' : '❚❚'}</button>` : ''}</div></div>`;
+}
+
+function currentAsPlace() {
+  if (S.status === 'holding' && S.place) return S.place;
+  if (S.current) return { name: 'Current spoofed location', subtitle: '', lat: S.current[0], lon: S.current[1] };
+  return null;
+}
+function prefillRoute() {
+  if (!rFrom) rFrom = currentAsPlace() || null;
+  if (!rTo && selected && (!rFrom || selected.lat !== rFrom.lat)) rTo = selected;
+  $('#rFrom').value = rFrom ? rFrom.name : '';
+  $('#rTo').value = rTo ? rTo.name : '';
+  setMode(mode);
+}
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('#modeSeg button').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+  const ranges = { walk: [2, 9], bike: [6, 40], drive: [15, 140] };
+  const k = $('#kmh'); k.min = ranges[m][0]; k.max = ranges[m][1];
+  k.value = (S.settings && S.settings[m + 'Kmh']) || { walk: 5, bike: 16, drive: 50 }[m];
+  $('#kmhLabel').textContent = k.value;
+  preview = null; drawRoute(); renderRouteInfo();
+}
+document.querySelectorAll('#modeSeg button').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+$('#kmh').oninput = () => { $('#kmhLabel').textContent = $('#kmh').value; renderRouteInfo(); };
+async function planRoute() {
+  if (!rFrom) rFrom = currentAsPlace() || selected;
+  if (!rFrom || !rTo) { toast('Choose where to start and where to go.'); return null; }
+  $('#previewBtn').disabled = true;
+  const r = await api('/api/route/plan', { start: rFrom, end: rTo, mode });
+  $('#previewBtn').disabled = false;
+  if (!r.ok) { toast(r.error); return null; }
+  preview = r.route; drawRoute(); renderRouteInfo();
+  map.fitBounds(L.latLngBounds(preview.coords), { padding: [40, 40] });
+  return preview;
+}
+function renderRouteInfo() {
+  const el = $('#routeInfo');
+  if (!preview) { el.style.display = 'none'; return; }
+  const secs = preview.distance / ($('#kmh').value / 3.6);
+  el.style.display = 'block';
+  el.innerHTML = `<b>${fmtDist(preview.distance)}</b> · about ${fmtDur(secs)}${preview.followsRoads ? '' : '<div class="muted" style="font-size:12px">No road route found, so this is a straight line.</div>'}`;
+}
+$('#previewBtn').onclick = planRoute;
+$('#startRouteBtn').onclick = async () => {
+  const route = preview || await planRoute();
+  if (!route) return;
+  await api('/api/settings', { [mode + 'Kmh']: +$('#kmh').value });
+  await api('/api/route/start', { route, kmh: +$('#kmh').value, loop: $('#loop').checked });
+  preview = null; showTab('spoof'); poll();
+};
+function drawRoute() {
+  const r = S.route || preview;
+  [routeLine, routeGlow, endMarker].forEach(l => l && map.removeLayer(l));
+  routeLine = routeGlow = endMarker = null;
+  if (!r) return;
+  routeGlow = L.polyline(r.coords, { color: '#6bc7ee', weight: 12, opacity: .25, lineCap: 'round' }).addTo(map);
+  routeLine = L.polyline(r.coords, { color: '#a6e0fb', weight: 4.5, opacity: 1, lineCap: 'round' }).addTo(map);
+  endMarker = L.marker([r.end.lat, r.end.lon], { icon: endIcon }).addTo(map);
+}
+
+document.querySelectorAll('#savedSeg button').forEach(b => b.onclick = () => {
+  savedKind = b.dataset.k;
+  document.querySelectorAll('#savedSeg button').forEach(x => x.classList.toggle('on', x === b));
+  renderSaved();
+});
+function renderSaved() {
+  const items = S[savedKind] || [];
+  const el = $('#savedList');
+  if (!items.length) { el.innerHTML = `<p class="muted">${savedKind === 'bookmarks' ? 'No bookmarks yet. Click ☆ on a place to save it.' : 'Places you spoof to show up here.'}</p>`; return; }
+  el.innerHTML = items.map((p, i) => `<div class="item">
+    <div class="t" data-sel="${i}"><b>${esc(p.name)}</b><small class="muted">${esc(p.subtitle || fmtCoord(p))}</small></div>
+    <button class="btn small" data-go="${i}">Spoof</button><button class="btn small ghost" data-del="${i}" title="Delete">✕</button></div>`).join('')
+    + (savedKind === 'history' ? '<button class="btn ghost small" id="clearHist" style="margin-top:10px">Clear history</button>' : '');
+  el.querySelectorAll('[data-sel]').forEach(x => x.onclick = () => { select(items[+x.dataset.sel]); showTab('spoof'); });
+  el.querySelectorAll('[data-go]').forEach(x => x.onclick = async () => { select(items[+x.dataset.go]); await api('/api/teleport', items[+x.dataset.go]); showTab('spoof'); poll(); });
+  el.querySelectorAll('[data-del]').forEach(x => x.onclick = async () => { await api('/api/library/delete', { kind: savedKind, id: items[+x.dataset.del].id }); await poll(); renderSaved(); });
+  const ch = $('#clearHist'); if (ch) ch.onclick = async () => { await api('/api/library/delete', { kind: 'history' }); await poll(); renderSaved(); };
+}
+
+document.querySelectorAll('#jobSeg button').forEach(b => b.onclick = () => {
+  jobKind = b.dataset.k;
+  document.querySelectorAll('#jobSeg button').forEach(x => x.classList.toggle('on', x === b));
+  $('#jobFromWrap').style.display = jobKind === 'route' ? 'block' : 'none';
+  $('#jToLabel').textContent = jobKind === 'route' ? 'To' : 'Place';
+});
+function prefillSchedule() {
+  if (!jTo && selected) jTo = selected;
+  if (!jFrom) jFrom = currentAsPlace();
+  $('#jTo').value = jTo ? jTo.name : '';
+  $('#jFrom').value = jFrom ? jFrom.name : '';
+  if (!$('#jWhen').value) {
+    const d = new Date(Date.now() + 15 * 60000); d.setSeconds(0, 0);
+    $('#jWhen').value = new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  }
+  renderJobs();
+}
+function renderJobs() {
+  const jobs = S.jobs || [];
+  $('#jobList').innerHTML = jobs.length ? jobs.map(j => {
+    const a = j.action, title = a.kind === 'teleport' ? `Teleport to ${a.place.name}` : `${a.mode} to ${a.end.name}`;
+    return `<div class="item"><div class="t"><b>${esc(title)}</b><small class="muted">${new Date(j.fireAt * 1000).toLocaleString()}</small></div><button class="btn small ghost" data-cancel="${j.id}">Cancel</button></div>`;
+  }).join('') : '<p class="muted" style="margin-top:0">Nothing scheduled.</p>';
+  document.querySelectorAll('[data-cancel]').forEach(b => b.onclick = async () => { await api('/api/schedule/cancel', { id: b.dataset.cancel }); await poll(); renderJobs(); });
+}
+$('#scheduleBtn').onclick = async () => {
+  const when = new Date($('#jWhen').value).getTime() / 1000;
+  if (!jTo || !when) { toast('Pick a place and a time.'); return; }
+  let action;
+  if (jobKind === 'teleport') action = { kind: 'teleport', place: jTo };
+  else {
+    if (!jFrom) { toast('Pick where the route starts.'); return; }
+    const m = $('#jMode').value;
+    action = { kind: 'route', start: jFrom, end: jTo, mode: m, kmh: (S.settings || {})[m + 'Kmh'], loop: false };
+  }
+  const r = await api('/api/schedule', { fireAt: when, action });
+  if (r.ok) { toast('Scheduled.'); await poll(); renderJobs(); } else toast(r.error || r.detail);
+};
+
+function msg(id, text, good) { const el = $(id); el.textContent = text || ''; el.className = 'msg ' + (good === undefined ? '' : good ? 'ok' : 'err'); }
+$('#devModeBtn').onclick = async () => { msg('#s2msg', 'Working…'); const r = await api('/api/setup/devmode', {}); msg('#s2msg', r.ok ? r.message : r.error, r.ok); };
+$('#mountBtn').onclick = async () => { msg('#s7msg', 'Mounting…'); const r = await api('/api/setup/mount', {}); msg('#s7msg', r.ok ? r.message : r.error, r.ok); };
+$('#pairBtn').onclick = async () => {
+  $('#pairBtn').disabled = true; msg('#s6msg', 'Pairing… keep the iPhone unlocked.');
+  const r = await api('/api/setup/pairing', {});
+  $('#pairBtn').disabled = false;
+  msg('#s6msg', r.ok ? r.message : r.error, r.ok);
+  if (r.ok) $('#s6n').classList.add('done');
+};
+$('#pushBtn').onclick = async () => { msg('#s6msg', 'Copying…'); const r = await api('/api/setup/push-pairing', {}); msg('#s6msg', r.ok ? r.message : r.error, r.ok); };
+async function runJob(path) {
+  const r = await api(path, {});
+  if (r.ok === false) { msg('#s3msg', r.error || r.detail, false); return; }
+  $('#jobLog').style.display = 'block'; msg('#s3msg', '');
+  const tick = async () => {
+    const j = await api('/api/setup/job');
+    $('#jobLog').textContent = j.lines.join('\n'); $('#jobLog').scrollTop = 1e9;
+    if (j.running) return setTimeout(tick, 1000);
+    if (j.ok) { msg('#s3msg', j.title + ' — done.', true); if (path.endsWith('install')) $('#s3n').classList.add('done'); }
+    else msg('#s3msg', j.title + ' failed. See the log above.', false);
+  };
+  setTimeout(tick, 600);
+}
+$('#installBtn').onclick = () => runJob('/api/setup/install');
+$('#quitBtn').onclick = async () => { await api('/api/quit', {}); document.body.innerHTML = '<p style="padding:40px;font:16px -apple-system;color:#ececf2">Drift for Mac has quit. You can close this tab.</p>'; };
+
+const settingInputs = { '#setKill': 'killswitchMinutes', '#setWalk': 'walkKmh', '#setBike': 'bikeKmh', '#setDrive': 'driveKmh' };
+Object.entries(settingInputs).forEach(([sel, key]) => $(sel).onchange = () => api('/api/settings', { [key]: +$(sel).value }).then(poll));
+$('#setJitter').onchange = () => api('/api/settings', { jitter: $('#setJitter').checked }).then(poll);
+function renderSettings() {
+  const s = S.settings || {};
+  Object.entries(settingInputs).forEach(([sel, key]) => { if (document.activeElement !== $(sel)) $(sel).value = s[key] ?? ''; });
+  $('#setJitter').checked = !!s.jitter;
+}
+
+let lastStatus = null, lastErr = null;
+async function poll() {
+  try { S = await api('/api/state'); } catch { return; }
+  renderStatus();
+  if (S.status !== lastStatus) { renderSelected(); lastStatus = S.status; }
+  if (S.current) {
+    if (!youMarker) youMarker = L.marker(S.current, { icon: youIcon, zIndexOffset: 1000 }).addTo(map); else youMarker.setLatLng(S.current);
+    if (S.status === 'moving') map.panTo(S.current, { animate: true, duration: .9 });
+  } else if (youMarker) { map.removeLayer(youMarker); youMarker = null; }
+  if (S.route || !preview) drawRoute();
+  if (S.error && S.error !== lastErr) { toast(S.error, 8000); api('/api/clear-error', {}); }
+  lastErr = S.error;
+  renderSettings();
+}
+async function pollDevice() {
+  try { device = await api('/api/device'); } catch { return; }
+  const on = device.connected && device.paired !== false;
+  $('#deviceDot').classList.toggle('on', !!on);
+  $('#deviceText').textContent = device.connected
+    ? (device.paired === false ? (device.error || 'Unlock iPhone & tap Trust') : `${device.name || 'iPhone'} · iOS ${device.ios || '?'}`)
+    : 'No iPhone connected';
+  $('#s1n').classList.toggle('done', !!on);
+  msg('#s1msg', device.connected ? (on ? `Connected: ${device.model || ''} (${device.connection})` : device.error) : 'Not connected yet.', device.connected ? !!on : undefined);
+  if (device.developerMode !== undefined) {
+    $('#s2n').classList.toggle('done', !!device.developerMode);
+    if (device.developerMode && !$('#s2msg').textContent) msg('#s2msg', 'Developer Mode is on.', true);
+  }
+  if (device.driftBundle) { $('#s3n').classList.add('done'); if (!$('#s3msg').textContent) msg('#s3msg', 'Drift is installed.', true); }
+}
+setInterval(poll, 1000); setInterval(pollDevice, 3000);
+poll().then(() => { renderSelected(); renderSaved(); }); pollDevice();
+</script>
+</body>
+</html>

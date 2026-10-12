@@ -1,0 +1,20 @@
+# Build output
+ios/build/
+ios/build-signed/
+dist/
+*.ipa
+xcuserdata/
+*.xcuserstate
+
+# Python tools for Drift for Mac (scripts/setup-mac.sh creates it)
+.venv/
+__pycache__/
+
+# Personal: your app ID and pairing files (they can control your phone)
+.bundle-id
+*.mobiledevicepairing
+*.mobiledevicepair
+*pairing*.plist
+pairingFile.plist
+
+.DS_Store

@@ -1,0 +1,13 @@
+#!/bin/zsh
+# Starts the Drift for Mac server (if it isn't already running) and opens it.
+ROOT="${0:A:h:h:h:h}"
+if [[ ! -x "$ROOT/.venv/bin/python" ]]; then
+  osascript -e 'display dialog "Drift for Mac isn'"'"'t set up yet.\n\nOpen Terminal in the Drift folder and run:\n./scripts/setup-mac.sh" buttons {"OK"} default button 1 with title "Drift" with icon caution' >/dev/null
+  exit 1
+fi
+mkdir -p "$HOME/Library/Logs"
+if curl -s -m 1 http://127.0.0.1:8765/api/state >/dev/null 2>&1; then
+  open "http://127.0.0.1:8765/"
+  exit 0
+fi
+nohup "$ROOT/.venv/bin/python" "$ROOT/mac/drift_mac.py" >> "$HOME/Library/Logs/Drift.log" 2>&1 &
