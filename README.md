@@ -12,7 +12,15 @@ It's free and needs no jailbreak. You build it yourself with Xcode and a free Ap
 - A USB cable for the first setup
 - About 30 minutes once, then about a minute a week to renew
 
-## Set it up
+## Set it up with Claude Code (easiest)
+
+Plug your iPhone into your Mac with a cable, open **Claude Code**, and paste:
+
+> Set up Drift on my iPhone: clone https://github.com/white-out-dance/Drift into ~/Drift and follow its CLAUDE.md.
+
+Claude does the Mac side (building, signing, installing, the pairing file) and tells you exactly what to tap on your phone. You sign in to Xcode yourself; Claude never sees your Apple ID password. Say yes when Claude asks to run commands.
+
+## Set it up by hand
 
 Follow **[docs/SETUP.md](docs/SETUP.md)**. In short:
 
@@ -62,6 +70,8 @@ iOS has a location simulation service for developers. Drift reaches that service
 | `ios/` | The iPhone app (SwiftUI) and its Lock Screen extension |
 | `mac/` | Drift for Mac: setup helper and USB spoofing (Python, runs locally in your browser) |
 | `scripts/setup-mac.sh` | One-time Mac setup |
+| `mac/cli.py` | Setup from the command line: `status` shows each step and what's next |
+| `CLAUDE.md` | Step-by-step playbook Claude Code follows to set Drift up for you |
 | `scripts/install-iphone.sh` | Builds, signs and installs Drift. Same as **Renew Drift** |
 | `Drift for Mac.app` | Opens Drift for Mac |
 | `Renew Drift.command` | Double-click to install or renew |

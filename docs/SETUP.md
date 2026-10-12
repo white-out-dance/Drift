@@ -4,6 +4,10 @@ This takes about 30 minutes, once. After that, Drift runs on your iPhone without
 
 **You need:** a Mac, your iPhone with its cable, and an Apple ID (a free one is fine).
 
+**Have Claude Code?** Let it do this for you. See the [README](../README.md#set-it-up-with-claude-code-easiest). The steps below are the manual version.
+
+**Prefer the command line?** After step 4, `.venv/bin/python mac/cli.py status` shows which steps are done and what's next. Run it with `--help` to see the setup commands.
+
 ---
 
 ## 1. Install Xcode (on the Mac)
